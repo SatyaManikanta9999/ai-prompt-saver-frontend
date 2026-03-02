@@ -9,6 +9,7 @@ function App() {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const [toast, setToast] = useState("");
+  const [sortOrder, setSortOrder] = useState("newest");
   const [darkMode, setDarkMode] = useState(() => {
   return localStorage.getItem("darkMode") === "true";
 });
@@ -63,18 +64,16 @@ function App() {
     });
 
     if (!response.ok) {
-      alert("Prompt cannot be empty");
       return;
     }
 
     const newPrompt = await response.json();
     setPrompts((prev) => [...prev, newPrompt]);
-
   } catch (error) {
     console.error(error);
-    alert("Something went wrong");
   }
 };
+
 
   const deletePrompt = (id) => {
   const confirmDelete = window.confirm("Are you sure?");
@@ -106,9 +105,19 @@ function App() {
     .catch(err => console.error(err));
 };
 
-  const filteredPrompts = prompts.filter((p) =>
-    p.text.toLowerCase().includes(search.toLowerCase())
-  );
+    const filteredPrompts = prompts
+    .filter(p =>
+      (p.text || "")
+        .toLowerCase()
+        .includes(search.toLowerCase())
+    )
+    .sort((a, b) => {
+      if (sortOrder === "newest") {
+        return new Date(b.createdAt) - new Date(a.createdAt);
+      } else {
+        return new Date(a.createdAt) - new Date(b.createdAt);
+      }
+    });
 
   return (
     <div className="app-container">
@@ -120,24 +129,31 @@ function App() {
     </div>
       <SearchBar search={search} setSearch={setSearch} />
       <PromptForm addPrompt={addPrompt} />
-      {/* Loading State */}
-    {loading && <p>Loading prompts...</p>}
+          {/* Loading State */}
+        {loading && <p>Loading prompts...</p>}
 
-    {/* Error State */}
-    {error && <p style={{ color: "red" }}>{error}</p>}
+        {/* Error State */}
+        {error && <p style={{ color: "red" }}>{error}</p>}
 
-    {/* Empty State */}
-    {!loading && prompts.length === 0 && (
-      <p>No prompts saved yet.</p>
-    )}
-      <PromptList
-        prompts={filteredPrompts}
-        deletePrompt={deletePrompt}
-        updatePrompt={updatePrompt}
-        setToast={setToast}
-      />
-      {toast && <div className="toast">{toast}</div>}
+        {/* Empty State */}
+        {!loading && prompts.length === 0 && (
+          <p>No prompts saved yet.</p>
+        )}
+        <div style={{ marginBottom: "15px" }}>
+      <button onClick={() =>
+        setSortOrder(prev => prev === "newest" ? "oldest" : "newest")
+      }>
+        Sort: {sortOrder === "newest" ? "Newest First" : "Oldest First"}
+      </button>
     </div>
+    <PromptList
+      prompts={filteredPrompts}
+      deletePrompt={deletePrompt}
+      updatePrompt={updatePrompt}
+      setToast={setToast}
+    />
+    {toast && <div className="toast">{toast}</div>}
+  </div>
   );
 }
 

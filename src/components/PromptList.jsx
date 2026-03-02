@@ -1,6 +1,11 @@
 import PromptCard from "./PromptCard";
 
-function PromptList({ prompts, deletePrompt, updatePrompt, setToast }) {
+function PromptList({
+  prompts,
+  deletePrompt,
+  updatePrompt,
+  setToast,
+}) {
   return (
     <div>
       {prompts.map((prompt) => (

@@ -1,6 +1,6 @@
 import { useState, useEffect, useRef } from "react";
 
-function PromptCard({ prompt, deletePrompt, updatePrompt, setToast }) {
+function PromptCard({ prompt, deletePrompt, updatePrompt, setToast}) {
   const [isEditing, setIsEditing] = useState(false);
   const [editedText, setEditedText] = useState(prompt.text);
   const [showMenu, setShowMenu] = useState(false);
@@ -57,6 +57,11 @@ function PromptCard({ prompt, deletePrompt, updatePrompt, setToast }) {
       ) : (
         <>
           <span className="prompt-text">{prompt.text}</span>
+          <div style={{ fontSize: "12px", color: "#888" }}>
+            {prompt.createdAt
+              ? new Date(prompt.createdAt).toLocaleString()
+              : "—"}
+          </div>
 
           <div className="actions">
             <button onClick={() => setIsEditing(true)}>Edit</button>
