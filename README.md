@@ -1,40 +1,29 @@
 # AI Prompt Saver
 
-Full-stack AI prompt manager built with:
+A full-stack AI workflow tool that allows users to:
 
-- React (Hooks)
-- Spring Boot
-- MySQL
-- REST APIs
-
-## Features
-
-- Create, update, delete prompts
-- Search functionality
-- Dark mode
-- Copy to clipboard
-- AI platform launcher (ChatGPT, Claude, Gemini, Perplexity)
-- Toast notifications
-- Validation
-- Persistent storage (MySQL)
+- Save prompts
+- Edit & delete prompts
+- Search prompts
+- Toggle dark mode
+- Copy prompts instantly
+- Launch prompts in ChatGPT, Claude, Gemini, Perplexity
+- Persistent storage using MySQL
 
 ## Tech Stack
 
 Frontend:
-- React
+- React (Hooks)
 - Fetch API
 - CSS
 
 Backend:
-- Spring Boot
-- Spring Data JPA
+- Spring Boot 3
+- JPA
 - MySQL
-- REST API
+- REST APIs
+- Validation
 
-## How to Run
+## Architecture
 
-Backend:
-- Run Spring Boot app on port 8080
-
-Frontend:
-- npm start (port 3000)
+Controller → Service → Repository → Database
